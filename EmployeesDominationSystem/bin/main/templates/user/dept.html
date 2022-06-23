@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title th:text="#{divisions_info}"></title>
+		<style type="text/css">
+			p {
+				color: #FF0000;
+			}
+			h1 {
+				font-size:18pt;
+				font-weight:bold;
+				color:gray;
+			}
+			body {
+				font-size:13pt;
+				font-weight:bold;
+				color:gray;
+				margin:5px 25px;
+			}
+			tr {
+				margin:5px;
+			}
+			th {
+				padding:5px;
+				color:white;
+				background:darkgray;
+			}
+/* 			td {
+				padding:5px;
+				color:black;
+				background:#f0f0f0;
+			} */
+			.bg-gray {
+				background:gray;
+    			color : black;
+    			pointer-events: none
+			}
+			.white {
+				background:white;
+    			color : white;
+    			pointer-events: none
+			}
+		</style>
+		<script type="text/javascript">
+			const list = document.getElementsByClassName('deptList');
+			console.log(list);
+
+			function disp()	 {
+				if(window.confirm('この作業は修正できません。本当によろしいですか。')) {
+					return true;
+				} else {
+					window.alert('キャンセルされました');
+					return false;
+				}
+			}
+
+			function searchAll() {
+				for (i = 0 ; i < list.length ; i++) {
+			    	list[i].style.display = "";
+				}
+			}
+
+			function searchEnrolled() {
+				for (i = 0 ; i < list.length ; i++) {
+					if (list[i].cells[8].innerText == "退職") {
+			    		list[i].style.display = "none";
+					} else {
+						list[i].style.display = "";
+					}
+				}
+			}
+
+			function searchRetired() {
+				for (i = 0 ; i < list.length ; i++) {
+					if (list[i].cells[8].innerText == "在籍") {
+			    		list[i].style.display = "none";
+					} else {
+						list[i].style.display = "";
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div >
+			<h1 th:each="dept:${depts}" th:text="${dept.divisions}"></h1>
+		</div>
+		<form th:object="${iParam}">
+			<div>
+				<input type="radio" th:field="*{status}" value="" onChange="searchAll()" th:text="#{all_emp}">
+				<input type="radio" th:field="*{status}" value="在籍" onChange="searchEnrolled()" th:text="#{enrolled_emp}">
+				<input type="radio" th:field="*{status}" value="退職" onChange="searchRetired()" th:text="#{retired_emp}">
+ 			</div>
+			<table>
+				<thead>
+					<tr>
+						<th th:text="#{id}"></th>
+						<th th:text="#{name}"></th>
+						<th th:text="#{territories}"></th>
+						<th th:text="#{clients}"></th>
+						<th th:text="#{profits}"></th>
+						<th th:text="#{update_date}"></th>
+						<th></th>
+						<th></th>
+					<tr>
+				</thead>
+				<tbody>
+					<tr class = "deptList" th:each="ip:${ipList}" th:object="${ip}" th:classappend="*{status == '退職' ? 'bg-gray' : '' }">
+						<td align="center" valign="middle" th:text="*{id}"></td>
+						<td align="center" valign="middle" th:text="*{name}"></td>
+						<td align="center" valign="middle" th:text="*{territories}"></td>
+						<td align="center" valign="middle" th:text="*{clients}"></td>
+						<td align="center" valign="middle" th:text="*{profits}"></td>
+						<td align="center" valign="middle" th:text="*{#dates.format(update_date, 'yyyy/MM/dd')}"></td>
+						<td align="center">
+							<a class="btn btn-default btn-xs" th:href="@{/update/{id}(id=*{id})}" th:text="#{edit}"></a>
+						</td>
+						<td align="center">
+							<input class="btn btn-default btn-xs" type="submit" value="退職" onClick="return disp()" th:formaction="@{/retire/{id}(id=*{id})}" th:formmethod="post">
+						</td>
+						<td class="white" align="center" valign="middle" th:text="*{status}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<div><a class="btn btn-link" href="/total" th:text="#{total_page}"></a></div>
+	</body>
+</html>

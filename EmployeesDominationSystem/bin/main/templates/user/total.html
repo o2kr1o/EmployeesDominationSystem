@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title th:text="#{total_page}"></title>
+		<style type="text/css">
+			p {
+				color: #FF0000;
+			}
+			h1 {
+				font-size:18pt;
+				font-weight:bold;
+				color:gray;
+			}
+			body {
+				font-size:13pt;
+				font-weight:bold;
+				color:gray;
+				margin:5px 25px;
+			}
+			tr {
+				margin:5px;
+			}
+			th {
+				padding:5px;
+				color:white;
+				background:darkgray;
+			}
+			td {
+				padding:5px;
+				color:black;
+				background:#f0f0f0;
+			}
+		</style>
+	</head>
+ 	<body>
+ 		<h1 th:text="#{total}"></h1>
+ 		<form method="post" th:action="@{/total}">
+			<table>
+				<thead>
+					<tr>
+						<th th:text="#{dept_id}"></th>
+						<th th:text="#{divisions}"></th>
+						<th th:text="#{total_client}"></th>
+						<th th:text="#{total_profit}"></th>
+						<th th:text="#{avg_profit}"></th>
+						<th></th>
+					<tr>
+				</thead>
+				<tbody>
+					<tr th:each="dp:${dpList}" th:object="${dp}">
+						<td align="center" valign="middle" th:text="*{dept_id}"></td>
+						<td align="center" valign="middle" th:text="*{divisions}"></td>
+						<td align="center" valign="middle" th:text="*{total_client}"></td>
+						<td align="center" valign="middle" th:text="*{total_profit}"></td>
+						<td align="center" valign="middle" th:text="*{avg_profit}"></td>
+						<td align="center"><a class="btn btn-default btn-xs" th:href="@{/dept/{dept_id}(dept_id=*{dept_id})}" th:text="#{edit}"></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<div><a class="btn btn-link" href="/bulkRegist" th:text="#{bulk_regist_page}"></a></div>
+		<div><a class="btn btn-link" href="/top" th:text="#{top_page}"></a></div>
+	</body>
+</html>

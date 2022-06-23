@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title th:text="#{top_page}"></title>
+		<style>
+			h1 {
+				font-size:18pt;
+				font-weight:bold;
+				color:gray;
+			}
+			body {
+				font-size:13pt;
+				font-weight:bold;
+				color:gray;
+				margin:5px 25px;
+			}
+			tr {
+				margin:5px;
+			}
+			th {
+				padding:5px;
+				color:white;
+				background:darkgray;
+			}
+			td {
+				padding:5px;
+				color:black;
+				background:#f0f0f0;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 th:text="#{top}"></h1>
+ 		<form method="post" th:action="@{/top}" th:object="${eParam}">
+ 			<table>
+				<tr>
+					<td>氏名　　　　　:<input type="text" name="name"></td>
+				</tr>
+				<tr>
+					<td>メールアドレス:<input type="text" name="email"></td>
+				</tr>
+				<tr>
+					<td>電話番号　　　:<input type="text" name="phone"></td>
+				</tr>
+			</table>
+			<div><input type="submit" value="検索"></div>
+		</form>
+		<h1 th:text="#{emp_info}"></h1>
+			<table>
+				<thead>
+					<tr>
+						<th th:text="#{id}"></th>
+						<th th:text="#{name}"></th>
+						<th th:text="#{email}"></th>
+						<th th:text="#{phone}"></th>
+						<th th:text="#{gender}"></th>
+						<th th:text="#{start_date}"></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="emp:${empList}" th:object="${emp}">
+						<td align="center" valign="middle" th:text="*{id}"></td>
+ 						<td align="center" th:text="*{name}"></td>
+ 						<td align="center" th:text="*{email}"></td>
+ 						<td align="center" th:text="*{phone}"></td>
+						<td align="center" th:text="*{gender}"></td>
+						<td align="center" th:text="*{#dates.format(start_date, 'yyyy/MM/dd')}"></td>
+ 						<td  align="center">
+							<form th:action="@{/delete/{id}(id=*{id})}" th:method="delete">
+ 								<input class="btn btn-default btn-xs" type="submit" th:value="削除">
+							</form>
+ 						</td>
+ 						<td align="center"><a class="btn btn-default btn-xs" th:href="@{/edit/{id}(id=*{id})}" th:text="#{edit}"></a></td>
+ 						<td align="center"><a class="btn btn-default btn-xs" th:href="@{/detail/{id}(id=*{id})}" th:text="#{detail}"></a></td>
+ 					</tr>
+ 				</tbody>
+ 			</table>
+		<div><a class="btn btn-default" href="/regist" th:text="#{regist_page}"></a></div>
+		<div><a class="btn btn-link" href="/total" th:text="#{total_page}"></a></div>
+	</body>
+</html>

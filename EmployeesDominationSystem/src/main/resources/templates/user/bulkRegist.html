@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<script src="https://code.jquery.com/jquery-3.6.0.slim.js"></script>
+		<meta charset="utf-8" />
+		<title th:text="#{bulk_regist_page}"></title>
+		<style type="text/css">
+			p {
+				color: #FF0000;
+			}
+			h1 {
+				font-size: 18pt;
+				font-weight: bold;
+				color: gray;
+			}
+			body {
+				font-size: 13pt;
+				font-weight: bold;
+				color: gray;
+				margin: 5px 25px;
+			}
+			tr {
+				margin: 5px;
+			}
+			th {
+				padding: 5px;
+				color: white;
+				background: darkgray;
+			}
+			td {
+				padding: 5px;
+				color: black;
+				background: #f0f0f0;
+			}
+			table {
+				border-spacing: 0;
+				border-collapse: separate;
+				border-width: 1px 0 0 1px;
+				border-style: solid;
+				border-color: #000;
+			}
+			th, td {
+				padding: 2px 4px;
+				border-width: 0 1px 1px 0;
+				border-style: solid;
+				border-color: #000;
+			}
+			.input_area td {
+				padding: 0;
+				background: palegreen;
+			}
+			textarea {
+				resize: both;
+				box-sizing: border-box;
+				width: 200px;
+				height: 200px;
+				margin: 0;
+				border: 0;
+				vertical-align: top;
+			}
+			.right {
+				float: right;
+				width: 80px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 th:text="#{bulk_regist}"></h1>
+		<form method="post" th:action="@{/bulkRegist}" th:object="${bulkRegistrationsListParam}">
+			<table>
+				<tr>
+					<td><button class="btn btn-default btn-xs" formaction="/resetAll" th:text="#{reset}"></button></td>
+					<td><input class="btn btn-default btn-xs" type="button" value="行新規" id= "add-row"></td>
+					<td><input class="btn btn-default btn-xs" type="button" value="行複製" id= "add-clone"></td>
+					<td><button class="btn btn-default btn-xs" formaction="/tempSave" th:text="#{temp_save}"></button></td>
+					<td><input class="btn btn-default btn-xs" type="submit" value="登録" onClick="return disp()"></td>
+				</tr>
+			</table>
+			<table>
+				<thead>
+					<tr>
+						<th th:text="#{password}"></th>
+						<th th:text="#{name}"></th>
+						<th th:text="#{email}"></th>
+						<th th:text="#{phone}"></th>
+						<th th:text="#{start_date}"></th>
+						<th th:text="#{divisions}"></th>
+						<th th:text="#{territories}"></th>
+						<th th:text="#{gender}"></th>
+						<th></th>
+					<tr>
+				</thead>
+				<tbody id="tbl_tbody">
+					<tr class="data" th:each="user, st : *{bulkRegistrationsParam}">
+						<td nowrap align="center" valign="middle">
+							<div><input type="text" th:field="*{bulkRegistrationsParam[__${st.index}__].password}"></div>
+							<p th:errors="*{bulkRegistrationsParam[__${st.index}__].password}">
+						</td>
+						<td nowrap align="center" valign="middle">
+							<div><input type="text" th:field="*{bulkRegistrationsParam[__${st.index}__].name}"></div>
+							<p th:errors="*{bulkRegistrationsParam[__${st.index}__].name}">
+						</td>
+						<td nowrap align="center" valign="middle">
+							<div><input type="text" th:field="*{bulkRegistrationsParam[__${st.index}__].email}"></div>
+							<p th:errors="*{bulkRegistrationsParam[__${st.index}__].email}">
+						</td>
+						<td nowrap align="center" valign="middle">
+							<div><input type="text" th:field="*{bulkRegistrationsParam[__${st.index}__].phone}"></div>
+							<p th:errors="*{bulkRegistrationsParam[__${st.index}__].phone}">
+						</td>
+						<td nowrap align="center" valign="middle">
+							<div><input type="date" th:field="*{bulkRegistrationsParam[__${st.index}__].start_date}" placeholder="yyyy/MM/dd"></div>
+							<p th:errors="*{bulkRegistrationsParam[__${st.index}__].start_date}">
+						</td>
+						<td nowrap align="center" valign="middle">
+							<div>
+								<select th:field="*{bulkRegistrationsParam[__${st.index}__].dept_id}">
+<!-- 								<option th:each="dept : ${deptList}" th:value="${dept.dept_id}" th:text="${dept.emp_dept}"></option> -->
+									<option value="1" th:selected="${bulkRegistrationsListParam.bulkRegistrationsParam[__${st.index}__].dept_id == 1}" th:text="#{dept1}"></option>
+  									<option value="2" th:selected="${bulkRegistrationsListParam.bulkRegistrationsParam[__${st.index}__].dept_id == 2}" th:text="#{dept2}"></option>
+  									<option value="3" th:selected="${bulkRegistrationsListParam.bulkRegistrationsParam[__${st.index}__].dept_id == 3}" th:text="#{dept3}"></option>
+  									<option value="4" th:selected="${bulkRegistrationsListParam.bulkRegistrationsParam[__${st.index}__].dept_id == 4}" th:text="#{dept4}"></option>
+								</select>
+							</div>
+						</td>
+						<td nowrap align="center" valign="middle">
+							<div>
+								<select th:field="*{bulkRegistrationsParam[__${st.index}__].area_id}">
+<!-- 								<option th:each="area : ${areaList}" th:value="${area.area_id}" th:text="${area.area_resp}"></option> -->
+									<option value="1" th:selected="${bulkRegistrationsListParam.bulkRegistrationsParam[__${st.index}__].area_id == 1}" th:text="#{area1}"></option>
+  									<option value="2" th:selected="${bulkRegistrationsListParam.bulkRegistrationsParam[__${st.index}__].area_id == 2}" th:text="#{area2}"></option>
+  									<option value="3" th:selected="${bulkRegistrationsListParam.bulkRegistrationsParam[__${st.index}__].area_id == 3}" th:text="#{area3}"></option>
+  									<option value="4" th:selected="${bulkRegistrationsListParam.bulkRegistrationsParam[__${st.index}__].area_id == 4}" th:text="#{area4}"></option>
+								</select>
+							</div>
+						</td>
+						<td align="center" valign="middle">
+							<div>
+								<input type="radio" th:field="*{bulkRegistrationsParam[__${st.index}__].gender}" value="男" th:text="#{man}">
+								<input type="radio" th:field="*{bulkRegistrationsParam[__${st.index}__].gender}" value="女" th:text="#{woman}">
+							</div>
+						</td>
+						<td nowrap align="center" valign="middle">
+							<button type="submit" name="index" th:value="${st.index}" formaction="/deleteRow" th:text="#{delete}"></button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<div><a class="btn btn-link" href="/total" th:text="#{total_page}"></a></div>
+		<script type="text/javascript">
+			const data = document.getElementsByClassName('data');
+			console.log(data);
+
+			function disp() {
+				if(window.confirm('本当に確定しますか')) {
+					return true;
+				} else {
+					window.alert('キャンセルされました');
+					return false;
+				}
+			}
+
+			$(function() {
+				$('#add-row').click(function() {
+					var rowIndex = $('#tbl_tbody > tr').length;
+					function formatDateInYyyymmdd(date) {
+					    const y = date.getFullYear();
+					    const m = date.getMonth() + 1;
+					    const d = date.getDate();
+					    const yyyy = y.toString();
+					    const mm = ("00" + m).slice(-2);
+					    const dd = ("00" + d).slice(-2);
+					    return yyyy + "-" + mm  + "-" + dd;
+					}
+					const date = new Date();
+					const yyyymmdd = formatDateInYyyymmdd(date);
+					var start_date = yyyymmdd;
+					var rowTemplate = `
+						<tr class="data">
+							<td nowrap align="center" valign="middle">
+								<div><input type="text" id="bulkRegistrationsParam${rowIndex}.password" name="bulkRegistrationsParam[${rowIndex}].password"></div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<div><input type="text" id="bulkRegistrationsParam${rowIndex}.name" name="bulkRegistrationsParam[${rowIndex}].name"></div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<div><input type="text" id="bulkRegistrationsParam${rowIndex}.email" name="bulkRegistrationsParam[${rowIndex}].email"></div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<div><input type="text" id="bulkRegistrationsParam${rowIndex}.phone" name="bulkRegistrationsParam[${rowIndex}].phone"></div>
+							</td>
+ 							<td nowrap align="center" valign="middle">
+								<div><input type="date"placeholder="yyyy/MM/dd" id="bulkRegistrationsParam${rowIndex}.start_date" name="bulkRegistrationsParam[${rowIndex}].start_date" value="${start_date}"></div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<div>
+									<select id="bulkRegistrationsParam${rowIndex}.dept_id" name="bulkRegistrationsParam[${rowIndex}].dept_id">
+										<option value="1">営業一課</option>
+										<option value="2">営業二課</option>
+										<option value="3">営業三課</option>
+										<option value="4">営業四課</option>
+									</select>
+								</div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<div>
+									<select id="bulkRegistrationsParam${rowIndex}.area_id" name="bulkRegistrationsParam[${rowIndex}].area_id">
+  										<option value="1">渋谷</option>
+  										<option value="2">新宿</option>
+  										<option value="3">池袋</option>
+  										<option value="4">品川</option>
+									</select>
+								</div>
+							</td>
+							<td align="center" valign="middle">
+								<div>
+									<input type="radio" id="bulkRegistrationsParam${rowIndex}.gender" name="bulkRegistrationsParam[${rowIndex}].gender" value="男" checked>男
+									<input type="radio" id="bulkRegistrationsParam${rowIndex}.gender" name="bulkRegistrationsParam[${rowIndex}].gender" value="女">女
+								</div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<button type="submit" name="index" value="${rowIndex}" formaction="/deleteRow">削除</button>
+							</td>
+						</tr>
+					`;
+					var newRow = rowTemplate;
+					$('#tbl_tbody').append(newRow);
+					rowIndex++;
+				});
+			});
+
+			$(function() {
+				$('#add-clone').click(function() {
+					var rowIndex = $('#tbl_tbody > tr').length;
+					var password = $(".data").last().find('input').val();
+					var name = $(".data").last()[0].cells[1].children[0].children[0].value;
+					var email = $(".data").last()[0].cells[2].children[0].children[0].value;
+					var phone = $(".data").last()[0].cells[3].children[0].children[0].value;
+					var start_date = $(".data").last()[0].cells[4].children[0].children[0].value;
+					if ($(".data").last()[0].cells[7].children[0].children[0].checked == true) {
+						var gender = "checked";
+					} else {
+						var gender = "";
+					}
+					if ($(".data").last()[0].cells[7].children[0].children[1].checked == true) {
+						var gender2 = "checked";
+					} else {
+						var gender2 = "";
+					}
+					var rowTemplate = `
+						<tr class="data">
+							<td nowrap align="center" valign="middle">
+								<div><input type="text" id="bulkRegistrationsParam${rowIndex}.password" name="bulkRegistrationsParam[${rowIndex}].password" value="${password}"></div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<div><input type="text" id="bulkRegistrationsParam${rowIndex}.name" name="bulkRegistrationsParam[${rowIndex}].name" value="${name}"></div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<div><input type="text" id="bulkRegistrationsParam${rowIndex}.email" name="bulkRegistrationsParam[${rowIndex}].email" value="${email}"></div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<div><input type="text" id="bulkRegistrationsParam${rowIndex}.phone" name="bulkRegistrationsParam[${rowIndex}].phone" value="${phone}"></div>
+							</td>
+ 							<td nowrap align="center" valign="middle">
+								<div><input type="date" placeholder="yyyy/MM/dd" id="bulkRegistrationsParam${rowIndex}.start_date" name="bulkRegistrationsParam[${rowIndex}].start_date" value="${start_date}"></div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<div>
+									<select id="bulkRegistrationsParam${rowIndex}.dept_id" name="bulkRegistrationsParam[${rowIndex}].dept_id">
+										<option value="1">営業一課</option>
+										<option value="2">営業二課</option>
+										<option value="3">営業三課</option>
+										<option value="4">営業四課</option>
+									</select>
+								</div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<div>
+									<select id="bulkRegistrationsParam${rowIndex}.area_id" name="bulkRegistrationsParam[${rowIndex}].area_id">
+										<option value="1">渋谷</option>
+										<option value="2">新宿</option>
+										<option value="3">池袋</option>
+										<option value="4">品川</option>
+									</select>
+								</div>
+							</td>
+							<td align="center" valign="middle">
+								<div>
+									<input type="radio" id="bulkRegistrationsParam${rowIndex}.gender" name="bulkRegistrationsParam[${rowIndex}].gender" ${gender} value="男">男
+									<input type="radio" id="bulkRegistrationsParam${rowIndex}.gender" name="bulkRegistrationsParam[${rowIndex}].gender" ${gender2} value="女">女
+								</div>
+							</td>
+							<td nowrap align="center" valign="middle">
+								<button type="submit" name="index" value="${rowIndex}" formaction="/deleteRow">削除</button>
+							</td>
+						</tr>
+					`;
+					var newRow = rowTemplate;
+ 					var sl = $(".data").last()[0].children[5].children[0].children[0];
+ 					var sl2 = $(".data").last()[0].children[6].children[0].children[0];
+ 					$('#tbl_tbody').append(newRow);
+					for(i = 0; i < 4; i++) {
+						if (sl.options[i].selected == true) {
+ 							sl = $(".data").last()[0].children[5].children[0].children[0];
+							sl.options[i].selected = true;
+						}
+						if (sl2.options[i].selected == true) {
+							sl2 = $(".data").last()[0].children[6].children[0].children[0];
+ 							sl2.options[i].selected = true;
+						}
+					}
+					rowIndex++;
+				});
+			});
+		</script>
+	</body>
+</html>

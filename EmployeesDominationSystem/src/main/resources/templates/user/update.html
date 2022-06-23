@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title th:text="#{update_page}"></title>
+		<style type="text/css">
+			p {
+				color: #FF0000;
+			}
+			h1 {
+				font-size:18pt;
+				font-weight:bold;
+				color:gray;
+			}
+			body {
+				font-size:13pt;
+				font-weight:bold;
+				color:gray;
+				margin:5px 25px;
+			}
+			tr {
+				margin:5px;
+			}
+			th {
+				padding:5px;
+				color:white;
+				background:darkgray;
+			}
+			td {
+				padding:5px;
+				color:black;
+				background:#f0f0f0;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 th:text="#{update}"></h1>
+		<form th:method="put" th:action="@{/update/{id}(id=*{id})}" th:object="${editingsParam}">
+			<table>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="*{id}"></label>
+						<input type="hidden" name="id" th:value="*{id}">
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="*{name}"></label>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{territories}"></label>
+				 		<div><select id="area_id" name="area_id">
+        					<option th:each="area:${areasList}" th:value="${area.area_id}" th:selected="${area.area_id} == *{area_id}">[[${area.territories}]]</option>
+    					</select></div>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{clients}"></label>
+						<div><input type="text" th:field="*{clients}"></div>
+						<p th:errors="*{clients}">
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{profits}"></label>
+						<div><input type="text" th:field="*{profits}"></div>
+						<p th:errors="*{profits}">
+					</td>
+				</tr>
+			</table>
+			<input class="btn btn-default btn-xs" type="submit" value="更新">
+		</form>
+		<a class="btn btn-link" th:href="@{/deptReturn/{id}(id=*{id})}" th:text="#{divisions_info}"></a>
+	</body>
+</html>

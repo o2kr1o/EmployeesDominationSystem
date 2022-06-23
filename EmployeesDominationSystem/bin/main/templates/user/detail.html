@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title th:text="#{detail_page}"></title>
+		<style>
+			h1 {
+				font-size:18pt;
+				font-weight:bold;
+				color:gray;
+			}
+			body {
+				font-size:13pt;
+				font-weight:bold;
+				color:gray;
+				margin:5px 25px;
+			}
+			tr {
+				margin:5px;
+			}
+			th {
+				padding:5px;
+				color:white;
+				background:darkgray;
+			}
+			td {
+				padding:5px;
+				color:black;
+				background:#f0f0f0;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 th:text="#{detail}"></h1>
+			<table>
+				<thead>
+					<tr>
+						<th th:text="#{id}"></th>
+						<th th:text="#{password}"></th>
+						<th th:text="#{name}"></th>
+						<th th:text="#{email}"></th>
+						<th th:text="#{phone}"></th>
+						<th th:text="#{gender}"></th>
+						<th th:text="#{start_date}"></th>
+						<th th:text="#{status}"></th>
+						<th th:text="#{update_date}"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="emp:${empInfo}" th:object="${emp}">
+						<td align="center" valign="middle" th:text="*{id}"></td>
+						<td align="center" th:text="*{password}"></td>
+ 						<td align="center" th:text="*{name}"></td>
+ 						<td align="center" th:text="*{email}"></td>
+ 						<td align="center" th:text="*{phone}"></td>
+						<td align="center" th:text="*{gender}"></td>
+						<td align="center" th:text="*{#dates.format(start_date, 'yyyy/MM/dd')}"></td>
+						<td align="center" th:text="*{status}"></td>
+						<td align="center" th:text="*{#dates.format(update_date, 'yyyy/MM/dd')}"></td>
+ 					</tr>
+ 				</tbody>
+ 			</table>
+ 		<div><a class="btn btn-default" th:href="@{/edit/{id}(id=*{id})}" th:text="#{edit_page}"></a></div>
+ 		<div><a class="btn btn-link" href="/top" th:text="#{top_page}"></a></div>
+	</body>
+</html>

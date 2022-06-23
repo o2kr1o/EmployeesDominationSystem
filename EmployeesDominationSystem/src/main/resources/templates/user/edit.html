@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title th:text="#{edit_page}"></title>
+		<style type="text/css">
+			p {
+				color: #FF0000;
+			}
+			h1 {
+				font-size:18pt;
+				font-weight:bold;
+				color:gray;
+			}
+			body {
+				font-size:13pt;
+				font-weight:bold;
+				color:gray;
+				margin:5px 25px;
+			}
+			tr {
+				margin:5px;
+			}
+			th {
+				padding:5px;
+				color:white;
+				background:darkgray;
+			}
+			td {
+				padding:5px;
+				color:black;
+				background:#f0f0f0;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 th:text="#{edit}"></h1>
+		<form th:method="put" th:action="@{/edit/{id}(id=*{id})}" th:object="${employeesParam}">
+			<table>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{password}"></label>
+						<div><input type="text" th:field="*{password}"></div>
+						<p th:errors="*{password}">
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{name}"></label>
+						<div><input type="text" th:field="*{name}"></div>
+						<p th:errors="*{name}">
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{email}"></label>
+						<div><input type="text" th:field="*{email}"></div>
+						<p th:errors="*{email}">
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{phone}"></label>
+						<div><input type="text" th:field="*{phone}"></div>
+						<p th:errors="*{phone}">
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{start_date}"></label>
+						<div><input type="date" th:field="*{start_date}" placeholder="yyyy/MM/dd"></div>
+						<p th:errors="*{start_date}">
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{divisions}"></label>
+						<div>
+				 			<select id="dept_id" name="dept_id">
+        						<option th:each="dept:${deptsList}" th:value="${dept.dept_id}" th:selected="${dept.dept_id} == *{dept_id}">[[${dept.divisions}]]</option>
+    						</select>
+    					</div>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{territories}"></label>
+						<div>
+				 			<select id="area_id" name="area_id">
+        						<option th:each="area:${areasList}" th:value="${area.area_id}" th:selected="${area.area_id} == *{area_id}">[[${area.territories}]]</option>
+    						</select>
+    					</div>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="middle">
+						<label th:text="#{gender}"></label>
+						<div>
+							<input type="radio" th:field="*{gender}" th:value="男" th:text="#{man}">
+							<input type="radio" th:field="*{gender}" th:value="女" th:text="#{woman}">
+						</div>
+					</td>
+				</tr>
+			</table>
+			<input class="btn btn-default btn-xs" type="submit" value="更新">
+		</form>
+		<div><a class="btn btn-link" href="/top" th:text="#{top_page}"></a></div>
+	</body>
+</html>
